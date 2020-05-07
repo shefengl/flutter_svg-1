@@ -8,8 +8,7 @@ import 'dart:ui' show Picture, Rect, hashValues, Size;
 import 'package:flutter/foundation.dart';
 
 /// The signature of a method that listens for errors on picture stream resolution.
-typedef PictureErrorListener = void Function(
-    dynamic exception, StackTrace stackTrace);
+typedef PictureErrorListener = void Function(dynamic exception, StackTrace stackTrace);
 
 @immutable
 class _PictureListenerPair {
@@ -85,7 +84,7 @@ typedef PictureListener = Function(PictureInfo image, bool synchronousCall);
 ///
 ///  * [PictureProvider], which has an example that includes the use of an
 ///    [PictureStream] in a [Widget].
-class PictureStream extends Diagnosticable {
+class PictureStream with DiagnosticableMixin {
   /// Create an initially unbound image stream.
   ///
   /// Once an [PictureStreamCompleter] is available, call [setCompleter].
@@ -174,8 +173,7 @@ class PictureStream extends Diagnosticable {
     properties.add(ObjectFlagProperty<List<_PictureListenerPair>>(
       'listeners',
       _listeners,
-      ifPresent:
-          '${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s"}',
+      ifPresent: '${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s"}',
       ifNull: 'no listeners',
       level: _completer != null ? DiagnosticLevel.hidden : DiagnosticLevel.info,
     ));
@@ -189,7 +187,7 @@ class PictureStream extends Diagnosticable {
 /// [PictureStreamListener] objects are rarely constructed directly. Generally, an
 /// [PictureProvider] subclass will return an [PictureStream] and automatically
 /// configure it with the right [PictureStreamCompleter] when possible.
-abstract class PictureStreamCompleter extends Diagnosticable {
+abstract class PictureStreamCompleter with DiagnosticableMixin {
   final List<_PictureListenerPair> _listeners = <_PictureListenerPair>[];
   PictureInfo _current;
 
@@ -233,8 +231,7 @@ abstract class PictureStreamCompleter extends Diagnosticable {
     if (_listeners.isEmpty) {
       return;
     }
-    final List<_PictureListenerPair> localListeners =
-        List<_PictureListenerPair>.from(_listeners);
+    final List<_PictureListenerPair> localListeners = List<_PictureListenerPair>.from(_listeners);
     for (_PictureListenerPair listenerPair in localListeners) {
       try {
         listenerPair.listener(picture, false);
@@ -267,8 +264,7 @@ abstract class PictureStreamCompleter extends Diagnosticable {
     description.add(ObjectFlagProperty<List<_PictureListenerPair>>(
       'listeners',
       _listeners,
-      ifPresent:
-          '${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s"}',
+      ifPresent: '${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s"}',
     ));
   }
 }
